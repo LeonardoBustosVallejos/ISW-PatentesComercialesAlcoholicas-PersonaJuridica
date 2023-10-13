@@ -1,0 +1,25 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "Proyecto de Ingenieria en Software",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeonardoBustosVallejos/ISW-PatentesComercialesAlcoholicas-PersonaJuridica.git"
+  },
+  "author": "Grupo 7",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LeonardoBustosVallejos/ISW-PatentesComercialesAlcoholicas-PersonaJuridica/issues"
+  },
+  "homepage": "https://github.com/LeonardoBustosVallejos/ISW-PatentesComercialesAlcoholicas-PersonaJuridica#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
