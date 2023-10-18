@@ -1,0 +1,14 @@
+Responsable: Francisco Catrileo
+
+Quien: El Usuario Solicitante.
+
+Cuando: Al seleccionar la opción “Revisar Estado de la Solicitud” en el Inicio de la página.
+
+Como: aparecen las patentes que están pendientes junto a su ID correspondiente y su Estado actual.
+Los Estados son 4: “Pendiente”, “En revisión”, “Rechazado” y “Aprobado” y puede pedir detalles sobre su estado.
+
+Restricciones:
+    - No puede editar el Estado de la Solicitud.
+    -        Solo puede haber un Estado a la vez.
+
+Post: Revisa el estado actual de su solicitud.
