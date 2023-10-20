@@ -19,5 +19,8 @@ router.use("/users", authenticationMiddleware, userRoutes);
 // Define las rutas para la autenticación /api/auth
 router.use("/auth", authRoutes);
 
+//Define las rutas para el formulario
+router.use("/formulario", router)
+
 // Exporta el enrutador
 module.exports = router;
