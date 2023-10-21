@@ -1,17 +1,21 @@
 "use strict";
 
+//importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
 
 //Buscar forma de guardar imagenes en la base de datos
 const formularioSchema = new mongoose.Schema(
     {
-    name: {
-        type:   String,
+    //Enlazamos el formulario con la categoria
+    categoria: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Categoria",
         required: true,
     },
     estado: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Estado",
         required: true,
     },
     fecha: {
@@ -33,7 +37,7 @@ const formularioSchema = new mongoose.Schema(
         type: Buffer,
         required: true,
     },
-    Cert_Consitucion: {
+    Cert_Constitucion: {
         type: Buffer,
         required: true,
     },
@@ -50,8 +54,10 @@ const formularioSchema = new mongoose.Schema(
         //Evita que se cree un campo __v en la base de datos
         versionKey: false,
     },
-    )
+)
 
+//Crea el modelo de datos 'Formulario' a partir del esquema 'formularioSchema'
 const Formulario = mongoose.model("Formulario", formularioSchema);
 
+//Exporta el modelo de datos 'Formulario'
 module.exports = Formulario;
