@@ -19,6 +19,8 @@ async function createRoles() {
     await Promise.all([
       new Role({ name: "user" }).save(),
       new Role({ name: "admin" }).save(),
+      //Nuevo Rol (Tambien hay que añadirlo en el archivo constants/roles.constants.js)
+      new Role({ name: "validator" }).save(),
     ]);
     console.log("* => Roles creados exitosamente");
   } catch (error) {
@@ -37,10 +39,13 @@ async function createUsers() {
     const count = await User.estimatedDocumentCount();
     if (count > 0) return;
 
+    // Busca los roles 'admin' y 'user' en la base de datos
     const admin = await Role.findOne({ name: "admin" });
     const user = await Role.findOne({ name: "user" });
 
+    // Si no encuentra los roles 'admin' y 'user' en la base de datos
     await Promise.all([
+      // Crea los usuarios 'admin' y 'user' en la base de datos
       new User({
         username: "user",
         email: "user@email.com",
