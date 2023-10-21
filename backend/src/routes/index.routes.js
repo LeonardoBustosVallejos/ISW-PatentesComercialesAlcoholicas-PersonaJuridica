@@ -8,6 +8,9 @@ const userRoutes = require("./user.routes.js");
 /** Enrutador de autenticación */
 const authRoutes = require("./auth.routes.js");
 
+/** Enrutador de formulario */
+const formularioRoutes = require("./formulario.routes.js");
+
 /** Middleware de autenticación */
 const authenticationMiddleware = require("../middlewares/authentication.middleware.js");
 
@@ -19,8 +22,8 @@ router.use("/users", authenticationMiddleware, userRoutes);
 // Define las rutas para la autenticación /api/auth
 router.use("/auth", authRoutes);
 
-//Define las rutas para el formulario
-router.use("/formulario", router)
+//Define las rutas para el formulario /api/formulario
+router.use("/formulario", formularioRoutes);
 
 // Exporta el enrutador
 module.exports = router;
