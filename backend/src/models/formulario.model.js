@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 
+
 //Buscar forma de guardar imagenes en la base de datos
 const formularioSchema = new mongoose.Schema(
     {
@@ -26,20 +27,22 @@ const formularioSchema = new mongoose.Schema(
         required: true,
     },
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
+    //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
+    //Buffer es un tipo de dato que almacena datos binarios
     Cert_Residencia: {
-        type: String,
+        type: Buffer,
         required: true,
     },
     Cert_Consitucion: {
-        type: String,
+        type: Buffer,
         required: true,
     },
     Carnet: {
-        type: String,
+        type: Buffer,
         required: true,
     },
     Cert_Propiedad: {
-        type: String,
+        type: Buffer,
         required: true,
     },
     },
