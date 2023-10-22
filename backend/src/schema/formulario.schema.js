@@ -2,6 +2,9 @@
 
 //Importar Joi y Joi.objectId
 const Joi = require("joi");
+//Importamos las categorias y los estados
+const CATEGORIA = require("../constants/categoria.constants");
+const ESTADO = require("../constants/estado.constants");
 
 //REVISAR SI LAS VALIDACIONES SON CORRECTAS
 //URGENTE
@@ -10,20 +13,17 @@ const Joi = require("joi");
  */
 
 const formularioBodySchema = Joi.object({
-    name: Joi.string().required().messages({
-        "string.empty": "El nombre no puede estar vacío.",
-        "any.required": "El nombre es obligatorio.",
-        "string.base": "El nombre debe ser de tipo string.",
-    }),
-    categoria: Joi.string().required().messages({
-        "string.empty": "La categoria no puede estar vacía.",
+    categoria: Joi.array().items(Joi.string().valid(...CATEGORIA)).required().messages({
+        "array.base": "La categoria debe ser de tipo array.",
         "any.required": "La categoria es obligatoria.",
         "string.base": "La categoria debe ser de tipo string.",
+        "any.only": "La categoria proporcionada no es válida.",
     }),
-    estado: Joi.string().required().messages({
-        "string.empty": "El estado no puede estar vacío.",
+    estado: Joi.array().items(Joi.string().valid(...ESTADO)).required().messages({
+        "array.base": "El estado debe ser de tipo array.",
         "any.required": "El estado es obligatorio.",
         "string.base": "El estado debe ser de tipo string.",
+        "any.only": "El estado proporcionado no es válido.",
     }),
     fecha: Joi.date().required().messages({
         "string.empty": "La fecha no puede estar vacía.",
@@ -63,3 +63,22 @@ const formularioBodySchema = Joi.object({
 }).messages({
     "object.unknown": "No se permiten propiedades adicionales.",
 });
+
+/**
+ * Esquema de validación para el id de formulario.
+ * @constant {Object}
+ */
+
+const formularioIdSchema = Joi.object({
+    id: Joi.string()
+        .required()
+        .pattern(/^(?:[0-9a-fA-F]{24}|[0-9a-fA-F]{12})$/)
+        .messages({
+            "string.empty": "El id no puede estar vacío.",
+            "any.required": "El id es obligatorio.",
+            "string.base": "El id debe ser de tipo string.",
+            "string.pattern.base": "El id proporcionado no es un ObjectId válido.",
+        }),
+});
+
+module.exports = { formularioBodySchema, formularioIdSchema };
