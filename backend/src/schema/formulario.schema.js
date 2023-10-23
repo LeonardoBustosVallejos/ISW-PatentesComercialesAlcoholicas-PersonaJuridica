@@ -35,6 +35,12 @@ const formularioBodySchema = Joi.object({
         "any.required": "El usuario es obligatorio.",
         "string.base": "El usuario debe ser de tipo string.",
     }),
+    email: Joi.string().required().email().messages({
+        "string.empty": "El email no puede estar vacío.",
+        "any.required": "El email es obligatorio.",
+        "string.base": "El email debe ser de tipo string.",
+        "string.email": "El email proporcionado no es válido.",
+    }),
     observaciones: Joi.string().required().messages({
         "string.empty": "Las observaciones no pueden estar vacías.",
         "any.required": "Las observaciones son obligatorias.",
