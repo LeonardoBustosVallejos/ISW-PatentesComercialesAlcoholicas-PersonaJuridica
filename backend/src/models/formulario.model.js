@@ -27,6 +27,10 @@ const formularioSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
+    email: {
+        type: String,
+        required: true,
+    },
     observaciones: {
         type: String,
         required: true,
