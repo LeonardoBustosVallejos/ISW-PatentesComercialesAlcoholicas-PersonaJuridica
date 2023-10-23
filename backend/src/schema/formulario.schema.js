@@ -40,22 +40,22 @@ const formularioBodySchema = Joi.object({
         "any.required": "Las observaciones son obligatorias.",
         "string.base": "Las observaciones deben ser de tipo string.",
     }),
-    Cert_Residencia: Joi.string().required().messages({
+    Residencia: Joi.string().required().messages({
         "string.empty": "El certificado de residencia no puede estar vacío.",
         "any.required": "El certificado de residencia es obligatorio.",
         "string.base": "El certificado de residencia debe ser de tipo string.",
     }),
-    Cert_Consitucion: Joi.string().required().messages({
-        "string.empty": "El certificado de constitución no puede estar vacío.",
-        "any.required": "El certificado de constitución es obligatorio.",
-        "string.base": "El certificado de constitución debe ser de tipo string.",
+    Constitucion: Joi.string().required().messages({
+        "string.empty": "El certificado de constitucion no puede estar vacío.",
+        "any.required": "El certificado de constitucion es obligatorio.",
+        "string.base": "El certificado de constitucion debe ser de tipo string.",
     }),
     Carnet: Joi.string().required().messages({
         "string.empty": "El carnet no puede estar vacío.",
         "any.required": "El carnet es obligatorio.",
         "string.base": "El carnet debe ser de tipo string.",
     }),
-    Cert_Propiedad: Joi.string().required().messages({
+    Propiedad: Joi.string().required().messages({
         "string.empty": "El certificado de propiedad no puede estar vacío.",
         "any.required": "El certificado de propiedad es obligatorio.",
         "string.base": "El certificado de propiedad debe ser de tipo string.",

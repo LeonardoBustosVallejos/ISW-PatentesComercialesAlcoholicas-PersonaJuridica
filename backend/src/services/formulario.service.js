@@ -26,24 +26,28 @@ async function getFormularios() {
 //createFormulario
 async function createFormulario(formulario) {
   try {
-    const {categoria, estado, fecha, usuario, observaciones, Cert_Residencia, Cert_Constitucion, Carnet, Cert_Propiedad } = formulario;
+    const {categoria, estado, fecha, usuario, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
+
     //Tenemos que ver que tenga una categoria existente
-    const categoriaFound = await Categoria.findOne({ name: formulario.categoria });
-    if (!categoriaFound) return [null, "La categoria no existe"];
-    //Tenemos que ver que tenga un estado existente
-    const estadoFound = await Estado.findOne({ name: formulario.estado });
-    if (!estadoFound) return [null, "El estado no existe"];
+    const categoriaFound = await Categoria.find({ nombre: {$in: categoria} });
+    if (categoriaFound.length === 0) return [null, "La categoria no existe"];
+    const myCategoria = categoriaFound.map((categoria) => categoria._id);
+    
+    //tenemos que ver que tenga un estado existente
+    const estadoFound = await Estado.find({ nombre: {$in: estado}});
+    if (estadoFound.length === 0) return [null, "El estado no existe"];
+    const myEstado = estadoFound.map((estado) => estado._id);
 
     const newFormulario = new Formulario({
-      categoria,
-      estado,
+      categoria: myCategoria,
+      estado: myEstado,
       fecha,
       usuario,
       observaciones,
-      Cert_Residencia,
-      Cert_Constitucion,
+      Residencia,
+      Constitucion,
       Carnet,
-      Cert_Propiedad,
+      Propiedad,
     });
     await newFormulario.save();
 
@@ -117,10 +121,25 @@ async function deleteFormulario(id) {
     }
 }
 
+//Obtener el estado del formulario con el nombre del usuario
+//URGENTE: HAY QUE VER COMO HACERLO, REQUISITO FUNCIONAL FRANCISCO
+async function getEstadoFormulario(usuario) {
+  try {
+    const formulario = await Formulario.findOne(usuario).select('_id estado').exec();
+
+    if (!formulario) return [null, "El formulario no existe"];
+
+    return [formulario, null];
+  } catch (error) {
+    handleError(error, "formulario.service -> getEstadoFormulario");
+  }
+}
+
 module.exports = {
     getFormularios,
     createFormulario,
     getFormularioById,
     updateFormulario,
     deleteFormulario,
+    getEstadoFormulario,
 };

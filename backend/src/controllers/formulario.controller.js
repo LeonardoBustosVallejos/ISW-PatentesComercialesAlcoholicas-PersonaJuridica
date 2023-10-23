@@ -31,14 +31,10 @@ async function createFormulario(req, res) {
     const { error: bodyError } = formularioBodySchema.validate(body);
     if (bodyError) return respondError(req, res, 400, bodyError.message);
 
-    const [newFormulario, formularioError] = await FormularioService.createFormulario(body);
+    const [formulario, formularioError] = await FormularioService.createFormulario(body);
+    if (formularioError) return respondError(req, res, 404, formularioError);
 
-    if (formularioError) return respondError(req, res, 400, formularioError);
-    if (!newFormulario) {
-      return respondError(req, res, 400, "No se creo el formulario");
-    }
-
-    respondSuccess(req, res, 201, newFormulario);
+    respondSuccess(req, res, 201, formulario);
   } catch (error) {
     handleError(error, "formulario.controller -> createFormulario");
     respondError(req, res, 500, "No se creo el formulario");
@@ -102,10 +98,29 @@ async function deleteFormularioById(req, res) {
   }
 }
 
+//Obtener el estado de un formulario por su id
+async function getEstadoFormularioByName(req, res) {
+  try {
+    const { params } = req;
+    const { error: paramsError } = formularioBodySchema.validate(params);
+    if (paramsError) return respondError(req, res, 400, paramsError.message);
+
+    const [formulario, formularioError] = await FormularioService.getFormularioByName(params.id);
+    if (formularioError) return respondError(req, res, 404, formularioError);
+
+    respondSuccess(req, res, 200, formulario);
+  } catch (error) {
+    handleError(error, "formulario.controller -> getFormularioById");
+    respondError(req, res, 500, "No se obtuvo el formulario");
+  }
+}
+
+//Exportamos los modulos
 module.exports = {
   getFormularios,
   createFormulario,
   getFormularioById,
   updateFormularioById,
   deleteFormularioById,
+  getEstadoFormularioByName,
 };

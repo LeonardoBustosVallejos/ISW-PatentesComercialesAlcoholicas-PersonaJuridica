@@ -1,5 +1,6 @@
 "use strict";
 
+const { date } = require("joi");
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
@@ -33,22 +34,22 @@ const formularioSchema = new mongoose.Schema(
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
     //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
     //Buffer es un tipo de dato que almacena datos binarios
-    Cert_Residencia: {
-        type: Buffer,
+    Residencia: {
+        type: String,
         required: true,
     },
-    Cert_Constitucion: {
-        type: Buffer,
+    Constitucion: {
+        type: String,
         required: true,
     },
     Carnet: {
-        type: Buffer,
+        type: String,
         required: true,
     },
-    Cert_Propiedad: {
-        type: Buffer,
+    Propiedad: {
+        type: String,
         required: true,
-    },
+    }
     },
     {
         //Evita que se cree un campo __v en la base de datos

@@ -2,14 +2,15 @@
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 //importa las categorias
-const ROLES = require("../constants/roles.constants");
+const CATEGORIA = require("../constants/categoria.constants");
 
 //Crea el esquema de la coleccion 'categorias'
 const categoriaSchema = new mongoose.Schema(
     {
-        name: {
-        type: String,
-        required: true,
+        nombre: {
+            type: String,
+            enum: CATEGORIA,
+            required: true,
         },
     },
     {

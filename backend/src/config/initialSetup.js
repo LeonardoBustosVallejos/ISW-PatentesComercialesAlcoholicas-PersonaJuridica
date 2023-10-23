@@ -2,6 +2,8 @@
 // Importa el modelo de datos 'Role'
 const Role = require("../models/role.model.js");
 const User = require("../models/user.model.js");
+const Categoria = require("../models/categoria.model.js");
+const Estado = require("../models/estado.model.js");
 
 /**
  * Crea los roles por defecto en la base de datos.
@@ -23,6 +25,42 @@ async function createRoles() {
       new Role({ name: "validator" }).save(),
     ]);
     console.log("* => Roles creados exitosamente");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function createCategories() {
+  try {
+    // Busca todos los roles en la base de datos
+    const count = await Categoria.estimatedDocumentCount();
+    // Si no hay roles en la base de datos los crea
+    if (count > 0) return;
+
+    await Promise.all([
+      new Categoria({ nombre: "Comercial" }).save(),
+      new Categoria({ nombre: "De Alcoholes" }).save(),
+    ]);
+    console.log("* => Roles creados exitosamente");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function createEstados() {
+  try {
+    // Busca todos los roles en la base de datos
+    const count = await Estado.estimatedDocumentCount();
+    // Si no hay roles en la base de datos los crea
+    if (count > 0) return;
+
+    await Promise.all([
+      new Estado({ nombre: "Pendiente" }).save(),
+      new Estado({ nombre: "Aprobado" }).save(),
+      new Estado({ nombre: "Rechazado" }).save(),
+      new Estado({ nombre: "En Revision" }).save(),
+    ]);
+    console.log("* => Categorias creadas exitosamente");
   } catch (error) {
     console.error(error);
   }
@@ -68,4 +106,6 @@ async function createUsers() {
 module.exports = {
   createRoles,
   createUsers,
+  createCategories,
+  createEstados,
 };
