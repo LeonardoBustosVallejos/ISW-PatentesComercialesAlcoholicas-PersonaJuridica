@@ -33,7 +33,6 @@ const formularioSchema = new mongoose.Schema(
     },
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
     //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
-    //Buffer es un tipo de dato que almacena datos binarios
     Residencia: {
         type: String,
         required: true,
