@@ -16,6 +16,6 @@ router.post("/", formularioController.createFormulario);
 router.get("/:id", formularioController.getFormularioById);
 router.put("/:id", formularioController.updateFormularioById);
 router.delete("/:id", formularioController.deleteFormularioById);
-router.get("/:usuario", formularioController.getEstadoFormularioByName);
+router.get("/u/:id", formularioController.getEstadoFormularioByName);
 
 module.exports = router;
