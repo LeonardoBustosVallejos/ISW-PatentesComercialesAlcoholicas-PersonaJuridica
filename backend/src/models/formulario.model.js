@@ -1,6 +1,4 @@
 "use strict";
-
-const { date } = require("joi");
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
@@ -38,11 +36,11 @@ const formularioSchema = new mongoose.Schema(
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
     //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
     Residencia: {
-        type: String,
+        type: Buffer,
         required: true,
     },
     Constitucion: {
-        type: String,
+        type: Buffer,
         required: true,
     },
     Carnet: {
