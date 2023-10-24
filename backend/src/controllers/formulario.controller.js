@@ -5,7 +5,7 @@ const { respondSuccess, respondError } = require("../utils/resHandler");
 //Importamos el servicio de formulario
 const FormularioService = require("../services/formulario.service");
 //Importamos el schema de formulario
-const { formularioBodySchema, formularioIdSchema } = require("../schema/formulario.schema");
+const { formularioBodySchema, formularioIdSchema, formularioUsuarioSchema } = require("../schema/formulario.schema");
 //Importamos el manejo de errores
 const { handleError } = require("../utils/errorHandler");
 
@@ -102,10 +102,26 @@ async function deleteFormularioById(req, res) {
 async function getEstadoFormularioByName(req, res) {
   try {
     const { params } = req;
-    const { error: paramsError } = formularioBodySchema.validate(params);
+    const { error: paramsError } = formularioUsuarioSchema.validate(params);
     if (paramsError) return respondError(req, res, 400, paramsError.message);
 
     const [formulario, formularioError] = await FormularioService.getEstadoFormulario(params.usuario);
+    if (formularioError) return respondError(req, res, 404, formularioError);
+
+    respondSuccess(req, res, 200, formulario);
+  } catch (error) {
+    handleError(error, "formulario.controller -> getFormularioByName");
+    respondError(req, res, 500, "No se obtuvo el formulario");
+  }
+}
+/**
+* async function getFormularioById(req, res) {
+  try {
+    const { params } = req;
+    const { error: paramsError } = formularioIdSchema.validate(params);
+    if (paramsError) return respondError(req, res, 400, paramsError.message);
+
+    const [formulario, formularioError] = await FormularioService.getFormularioById(params.id);
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 200, formulario);
@@ -114,6 +130,9 @@ async function getEstadoFormularioByName(req, res) {
     respondError(req, res, 500, "No se obtuvo el formulario");
   }
 }
+*/
+
+
 
 //Exportamos los modulos
 module.exports = {

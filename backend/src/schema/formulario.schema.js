@@ -87,4 +87,12 @@ const formularioIdSchema = Joi.object({
         }),
 });
 
-module.exports = { formularioBodySchema, formularioIdSchema };
+const formularioUsuarioSchema = Joi.object({
+    usuario: Joi.string().required().messages({
+        "string.empty": "El usuario no puede estar vacío.",
+        "any.required": "El usuario es obligatorio.",
+        "string.base": "El usuario debe ser de tipo string.",
+    }),
+});
+
+module.exports = { formularioBodySchema, formularioIdSchema, formularioUsuarioSchema };
