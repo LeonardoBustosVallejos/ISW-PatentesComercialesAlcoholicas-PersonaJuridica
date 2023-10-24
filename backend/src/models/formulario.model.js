@@ -1,6 +1,4 @@
 "use strict";
-
-const { date } = require("joi");
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 

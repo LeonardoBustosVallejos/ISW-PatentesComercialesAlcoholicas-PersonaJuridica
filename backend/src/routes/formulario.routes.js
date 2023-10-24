@@ -16,6 +16,9 @@ router.post("/", formularioController.createFormulario);
 router.get("/:id", formularioController.getFormularioById);
 router.put("/:id", formularioController.updateFormularioById);
 router.delete("/:id", formularioController.deleteFormularioById);
+
+//REQUISITO FUNCIONAL FRANCISCO
+//BUSCAR URGENTE COMO HACERLO
 router.get("/u/:id", formularioController.getEstadoFormularioByName);
 
 module.exports = router;
