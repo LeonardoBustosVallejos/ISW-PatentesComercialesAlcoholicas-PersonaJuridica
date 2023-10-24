@@ -132,10 +132,11 @@ async function deleteFormulario(id) {
 async function getEstadoFormulario(usuario) {
   try {
     const formulario = await Formulario.find({usuario: usuario}).select('estado _id').populate('estado').exec();
-    //const estado = await Formulario.find({usuario: usuario}).select('estado').populate('estado');
     if (!formulario) return [null, "El formulario no existe"];
+    //Creamos la constante estadoConsulta para que nos devuelva el estado de la consulta del formulario
+    const estadoConsulta = formulario.map((estado) => estado.estado.nombre);
 
-    return [formulario, null];
+    return ["El estado de la consulta es: "+estadoConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getEstadoFormulario");
   }
