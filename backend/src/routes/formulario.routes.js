@@ -6,6 +6,7 @@ const formularioController = require("../controllers/formulario.controller.js");
 
 // Importa el middleware de autorización
 const authorizationMiddleware = require("../middlewares/authorization.middleware.js");
+const Formulario = require("../models/formulario.model.js");
 // Instancia del enrutador
 const router = express.Router();
 
@@ -16,6 +17,9 @@ router.post("/", formularioController.createFormulario);
 router.get("/:id", formularioController.getFormularioById);
 router.put("/:id", formularioController.updateFormularioById);
 router.delete("/:id", formularioController.deleteFormularioById);
-router.get("/:usuario", formularioController.getEstadoFormularioByName);
+
+//REQUISITO FUNCIONAL FRANCISCO
+//BUSCAR URGENTE COMO HACERLO
+router.get("/consulta/:usuario", formularioController.getEstadoFormularioByName);
 
 module.exports = router;
