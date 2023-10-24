@@ -105,7 +105,7 @@ async function getEstadoFormularioByName(req, res) {
     const { error: paramsError } = formularioBodySchema.validate(params);
     if (paramsError) return respondError(req, res, 400, paramsError.message);
 
-    const [formulario, formularioError] = await FormularioService.getEstadoFormulario(params.id);
+    const [formulario, formularioError] = await FormularioService.getEstadoFormulario(params.usuario);
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 200, formulario);

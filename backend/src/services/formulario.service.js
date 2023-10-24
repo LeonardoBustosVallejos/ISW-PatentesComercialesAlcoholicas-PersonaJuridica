@@ -123,10 +123,15 @@ async function deleteFormulario(id) {
 }
 
 //Obtener el estado del formulario con el nombre del usuario
+/**
+ * 
+ * @param {string} usuario 
+ * @returns 
+ */
 //URGENTE: HAY QUE VER COMO HACERLO, REQUISITO FUNCIONAL FRANCISCO
 async function getEstadoFormulario(usuario) {
   try {
-    const formulario = await Formulario.find({usuario}).select('_id estado').exec();
+    const formulario = await Formulario.find({usuario: usuario}).exec();
 
     if (!formulario) return [null, "El formulario no existe"];
 
