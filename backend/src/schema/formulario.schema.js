@@ -19,17 +19,6 @@ const formularioBodySchema = Joi.object({
         "string.base": "La categoria debe ser de tipo string.",
         "any.only": "La categoria proporcionada no es válida.",
     }),
-    estado: Joi.array().items(Joi.string().valid(...ESTADO)).required().messages({
-        "array.base": "El estado debe ser de tipo array.",
-        "any.required": "El estado es obligatorio.",
-        "string.base": "El estado debe ser de tipo string.",
-        "any.only": "El estado proporcionado no es válido.",
-    }),
-    fecha: Joi.date().required().messages({
-        "string.empty": "La fecha no puede estar vacía.",
-        "any.required": "La fecha es obligatoria.",
-        "string.base": "La fecha debe ser de tipo string.",
-    }),
     usuario: Joi.string().required().messages({
         "string.empty": "El usuario no puede estar vacío.",
         "any.required": "El usuario es obligatorio.",

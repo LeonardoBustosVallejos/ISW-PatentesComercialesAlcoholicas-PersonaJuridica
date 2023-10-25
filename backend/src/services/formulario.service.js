@@ -23,25 +23,24 @@ async function getFormularios() {
   }
 }
 
+
+
+
 //createFormulario
 async function createFormulario(formulario) {
   try {
-    const {categoria, estado, fecha, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
+    const {categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
 
     //Tenemos que ver que tenga una categoria existente
     const categoriaFound = await Categoria.find({ nombre: {$in: categoria} });
     if (categoriaFound.length === 0) return [null, "La categoria no existe"];
     const myCategoria = categoriaFound.map((categoria) => categoria._id);
-    
+
     //tenemos que ver que tenga un estado existente
-    const estadoFound = await Estado.find({ nombre: {$in: estado}});
-    if (estadoFound.length === 0) return [null, "El estado no existe"];
-    const myEstado = estadoFound.map((estado) => estado._id);
+    
 
     const newFormulario = new Formulario({
       categoria: myCategoria,
-      estado: myEstado,
-      fecha,
       usuario,
       email,
       observaciones,

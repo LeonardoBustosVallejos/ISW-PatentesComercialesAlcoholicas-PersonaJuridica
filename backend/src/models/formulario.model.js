@@ -15,10 +15,12 @@ const formularioSchema = new mongoose.Schema(
     estado: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Estado",
+        default: "6536f6275233b5fe498b531f",
         required: true,
     },
     fecha: {
         type: Date,
+        default: Date.now,
         required: true,
     },
     usuario: {
