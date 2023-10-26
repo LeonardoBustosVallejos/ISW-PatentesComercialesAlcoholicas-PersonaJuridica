@@ -6,6 +6,8 @@ const Formulario = require("../models/formulario.model.js");
 const Categoria = require("../models/categoria.model.js");
 //Importamos el modelo de estado
 const Estado = require("../models/estado.model.js");
+//Importamos el modelo de usuario
+const Usuario = require("../models/user.model.js");
 const { handleError } = require("../utils/errorHandler");
 
 
@@ -36,13 +38,24 @@ async function createFormulario(formulario) {
     if (categoriaFound.length === 0) return [null, "La categoria no existe"];
     const myCategoria = categoriaFound.map((categoria) => categoria._id);
 
-    //tenemos que ver que tenga un estado existente
-    
+    //El usuario tiene que estar en la base de datos
+    const usuarioFound = await Usuario.find({ username: usuario });
+    if (usuarioFound.length===0) return [null, "El usuario no existe"];
+    const myUsuario = usuarioFound.map((usuario) => usuario._id);
 
-    const newFormulario = new Formulario({
+    const emailFound = await Usuario.find({ email: email });
+    if (emailFound.length===0) return [null, "El email no existe"];
+    const myEmail = emailFound.map((email) => email._id);
+
+    const UID = myUsuario[0]._id.toString();
+    const EID = myEmail[0]._id.toString();
+    //Comparamos que la id de usuario sea igual al id del email
+    if (UID !== EID) return [null, "El usuario no coincide con el email "+UID+" "+EID];
+
+   const newFormulario = new Formulario({
       categoria: myCategoria,
-      usuario,
-      email,
+      usuario: myUsuario,
+      email: myEmail,
       observaciones,
       Residencia,
       Constitucion,
