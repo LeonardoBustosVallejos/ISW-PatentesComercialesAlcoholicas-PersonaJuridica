@@ -50,7 +50,7 @@ async function createFormulario(formulario) {
     const UID = myUsuario[0]._id.toString();
     const EID = myEmail[0]._id.toString();
     //Comparamos que la id de usuario sea igual al id del email
-    if (UID !== EID) return [null, "El usuario no coincide con el email "+UID+" "+EID];
+    if (UID !== EID) return [null, "El usuario no coincide con el email, sus ID son: "+UID+" "+EID];
 
    const newFormulario = new Formulario({
       categoria: myCategoria,
