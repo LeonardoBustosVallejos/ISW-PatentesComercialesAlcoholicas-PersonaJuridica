@@ -20,7 +20,7 @@ router.delete("/:id", formularioController.deleteFormularioById);
 
 //REQUISITO FUNCIONAL FRANCISCO
 //BUSCAR URGENTE COMO HACERLO
-router.get("/consulta/:usuario", formularioController.getEstadoFormularioByName);
-router.get("/consulta/:usuario/obs", formularioController.getObsFormularioByName);
+router.get("/consulta/:email", formularioController.getEstadoFormularioByEmail);
+router.get("/consulta/:email/obs", formularioController.getObsFormularioByEmail);
 
 module.exports = router;
