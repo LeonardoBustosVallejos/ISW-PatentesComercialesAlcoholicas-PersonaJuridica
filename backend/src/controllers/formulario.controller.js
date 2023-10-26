@@ -114,23 +114,22 @@ async function getEstadoFormularioByName(req, res) {
     respondError(req, res, 500, "No se obtuvo el formulario");
   }
 }
-/**
-* async function getFormularioById(req, res) {
+
+async function getObsFormularioByName(req, res) {
   try {
     const { params } = req;
-    const { error: paramsError } = formularioIdSchema.validate(params);
+    const { error: paramsError } = formularioUsuarioSchema.validate(params);
     if (paramsError) return respondError(req, res, 400, paramsError.message);
 
-    const [formulario, formularioError] = await FormularioService.getFormularioById(params.id);
+    const [formulario, formularioError] = await FormularioService.getObsFormulario(params.usuario);
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 200, formulario);
   } catch (error) {
-    handleError(error, "formulario.controller -> getFormularioById");
+    handleError(error, "formulario.controller -> getFormularioByName");
     respondError(req, res, 500, "No se obtuvo el formulario");
   }
 }
-*/
 
 
 
@@ -142,4 +141,5 @@ module.exports = {
   updateFormularioById,
   deleteFormularioById,
   getEstadoFormularioByName,
+  getObsFormularioByName,
 };

@@ -132,12 +132,25 @@ async function getEstadoFormulario(usuario) {
   try {
     const formulario = await Formulario.find({usuario: usuario}).select('estado _id').populate('estado').exec();
     if (!formulario) return [null, "El formulario no existe"];
-    //Creamos la constante estadoConsulta para que nos devuelva el estado de la consulta del formulario
+    //Conseguimos el estado del formulario aparte
     const estadoConsulta = formulario.map((estado) => estado.estado.nombre);
 
     return ["El estado de la consulta es: "+estadoConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getEstadoFormulario");
+  }
+}
+
+async function getObsFormulario(usuario) {
+  try {
+    const formulario = await Formulario.find({usuario: usuario}).select('observaciones').exec();
+    if (!formulario) return [null, "El formulario no existe"];
+    //Conseguimos la observacion del formulario
+    const obsConsulta = formulario.map((obs) => obs.observaciones);
+
+    return ["La(s) observacion(es): "+obsConsulta, null];
+  } catch (error) {
+    handleError(error, "formulario.service -> getObsFormulario");
   }
 }
 
@@ -148,4 +161,5 @@ module.exports = {
     updateFormulario,
     deleteFormulario,
     getEstadoFormulario,
+    getObsFormulario,
 };
