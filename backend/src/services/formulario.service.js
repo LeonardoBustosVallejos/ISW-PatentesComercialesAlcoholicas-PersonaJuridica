@@ -79,8 +79,10 @@ async function createFormulario(formulario) {
 
 async function getFormularioById(id) {
     try {
-        const formularios = await Formulario.findById({ _id: id })
-    .exec();
+        const formularios = await Formulario.findById({ _id: id }).populate("categoria").populate("estado")
+        .populate({path:"usuario",select:"username"})
+        .populate({path:"email",select:"email"})
+        .exec();
 
   if (!formularios) return [null, "El formulario no existe"];
 
