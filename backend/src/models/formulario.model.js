@@ -25,12 +25,12 @@ const formularioSchema = new mongoose.Schema(
     },
     usuario: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Usuario",
+        ref: "User",
         required: true,
     },
     email: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Usuario",
+        ref: "User",
         required: true,
     },
     observaciones: {

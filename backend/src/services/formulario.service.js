@@ -15,8 +15,10 @@ const { handleError } = require("../utils/errorHandler");
 //getFormularios
 async function getFormularios() {
   try {
-    const formularios = await Formulario.find()
-      .exec();
+    const formularios = await Formulario.find().populate("categoria").populate("estado")
+    .populate({path:"usuario",select:"username"})
+    .populate({path:"email",select:"email"})
+    .exec();
     if (!formularios) return [null, "No hay formularios"];
 
     return [formularios, null];
@@ -24,9 +26,6 @@ async function getFormularios() {
     handleError(error, "formulario.service -> getFormularios");
   }
 }
-
-
-
 
 //createFormulario
 async function createFormulario(formulario) {
