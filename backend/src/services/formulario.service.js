@@ -43,10 +43,12 @@ async function createFormulario(formulario) {
     if (usuarioFound.length===0) return [null, "El usuario no existe"];
     const myUsuario = usuarioFound.map((usuario) => usuario._id);
 
+    //El email tiene que estar en la base de datos
     const emailFound = await Usuario.find({ email: email });
     if (emailFound.length===0) return [null, "El email no existe"];
     const myEmail = emailFound.map((email) => email._id);
 
+    //Convierto las id a string para poder compararlas
     const UID = myUsuario[0]._id.toString();
     const EID = myEmail[0]._id.toString();
     //Comparamos que la id de usuario sea igual al id del email
