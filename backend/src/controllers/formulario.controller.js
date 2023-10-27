@@ -5,7 +5,7 @@ const { respondSuccess, respondError } = require("../utils/resHandler");
 //Importamos el servicio de formulario
 const FormularioService = require("../services/formulario.service");
 //Importamos el schema de formulario
-const { formularioBodySchema, formularioIdSchema, formularioUsuarioSchema } = require("../schema/formulario.schema");
+const { formularioBodySchema, formularioIdSchema, formularioEmailSchema } = require("../schema/formulario.schema");
 //Importamos el manejo de errores
 const { handleError } = require("../utils/errorHandler");
 
@@ -99,38 +99,37 @@ async function deleteFormularioById(req, res) {
 }
 
 //Obtener el estado de un formulario por su id
-async function getEstadoFormularioByName(req, res) {
+async function getEstadoFormularioByEmail(req, res) {
   try {
     const { params } = req;
-    const { error: paramsError } = formularioUsuarioSchema.validate(params);
+    const { error: paramsError } = formularioEmailSchema.validate(params);
     if (paramsError) return respondError(req, res, 400, paramsError.message);
 
-    const [formulario, formularioError] = await FormularioService.getEstadoFormulario(params.usuario);
+    const [formulario, formularioError] = await FormularioService.getEstadoFormulario(params.email);
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 200, formulario);
   } catch (error) {
-    handleError(error, "formulario.controller -> getFormularioByName");
+    handleError(error, "formulario.controller -> getFormularioByEmail");
     respondError(req, res, 500, "No se obtuvo el formulario");
   }
 }
-/**
-* async function getFormularioById(req, res) {
+
+async function getObsFormularioByEmail(req, res) {
   try {
     const { params } = req;
-    const { error: paramsError } = formularioIdSchema.validate(params);
+    const { error: paramsError } = formularioEmailSchema.validate(params);
     if (paramsError) return respondError(req, res, 400, paramsError.message);
 
-    const [formulario, formularioError] = await FormularioService.getFormularioById(params.id);
+    const [formulario, formularioError] = await FormularioService.getObsFormulario(params.email);
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 200, formulario);
   } catch (error) {
-    handleError(error, "formulario.controller -> getFormularioById");
+    handleError(error, "formulario.controller -> getFormularioByEmail");
     respondError(req, res, 500, "No se obtuvo el formulario");
   }
 }
-*/
 
 
 
@@ -141,5 +140,6 @@ module.exports = {
   getFormularioById,
   updateFormularioById,
   deleteFormularioById,
-  getEstadoFormularioByName,
+  getEstadoFormularioByEmail,
+  getObsFormularioByEmail,
 };
