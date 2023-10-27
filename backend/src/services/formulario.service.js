@@ -30,7 +30,7 @@ async function getFormularios() {
 //createFormulario
 async function createFormulario(formulario) {
   try {
-    const {categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
+  const {categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
 
     //Tenemos que ver que tenga una categoria existente
     const categoriaFound = await Categoria.find({ nombre: {$in: categoria} });

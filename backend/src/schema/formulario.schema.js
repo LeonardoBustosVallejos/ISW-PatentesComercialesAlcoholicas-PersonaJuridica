@@ -19,7 +19,7 @@ const formularioBodySchema = Joi.object({
         "string.base": "La categoria debe ser de tipo string.",
         "any.only": "La categoria proporcionada no es válida.",
     }),
-    usuario: Joi.string().required().messages({
+    usuario: Joi.string().required().messages({//nombre de la persona que solicita el formulario
         "string.empty": "El usuario no puede estar vacío.",
         "any.required": "El usuario es obligatorio.",
         "string.base": "El usuario debe ser de tipo string.",
@@ -34,8 +34,10 @@ const formularioBodySchema = Joi.object({
         "string.empty": "Las observaciones no pueden estar vacías.",
         "any.required": "Las observaciones son obligatorias.",
         "string.base": "Las observaciones deben ser de tipo string.",
-    }),
-    Residencia: Joi.string().required().messages({
+    }),//de Residencia hacua abajo son los documentos que se deben adjuntar
+    //Cambiar tipo o buscar como enviar imagenes a la base de datos
+    //puede estar sujetos a cambios
+ /*   Residencia: Joi.string().required().messages({
         "string.empty": "El certificado de residencia no puede estar vacío.",
         "any.required": "El certificado de residencia es obligatorio.",
         "string.base": "El certificado de residencia debe ser de tipo string.",
@@ -54,7 +56,7 @@ const formularioBodySchema = Joi.object({
         "string.empty": "El certificado de propiedad no puede estar vacío.",
         "any.required": "El certificado de propiedad es obligatorio.",
         "string.base": "El certificado de propiedad debe ser de tipo string.",
-    }),
+    }),*/
 }).messages({
     "object.unknown": "No se permiten propiedades adicionales.",
 });

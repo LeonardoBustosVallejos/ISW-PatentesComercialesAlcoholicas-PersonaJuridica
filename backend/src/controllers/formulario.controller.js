@@ -27,6 +27,24 @@ async function getFormularios(req, res) {
 //Crear un formulario
 async function createFormulario(req, res) {
   try {
+    
+        // Use the upload middleware to handle file uploads
+        upload.single('Residencia', 'Carnet', 'Constitucion', 'Propiedad')(req, res, function(err) {
+          if (err) {
+              return res.status(400).send({ message: 'Error uploading file' });
+          }
+          /*// Process the form data
+          const formulario = new formulario({
+              // ...
+              Residencia: req.file.buffer,
+              Carnet: req.file.buffer,
+              Constitucion: req.file.buffer,
+              Propiedad: req.file.buffer,
+              // ...
+          });*/
+          formulario.save();
+          res.status(201).send(formulario);
+      });
     const { body } = req;
     const { error: bodyError } = formularioBodySchema.validate(body);
     if (bodyError) return respondError(req, res, 400, bodyError.message);

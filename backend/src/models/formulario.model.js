@@ -1,7 +1,7 @@
 "use strict";
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
-
+const upload = require('../middlewares/multer.middleware.js');
 
 //Buscar forma de guardar imagenes en la base de datos
 const formularioSchema = new mongoose.Schema(
@@ -15,7 +15,7 @@ const formularioSchema = new mongoose.Schema(
     estado: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Estado",
-        default: "6536f6275233b5fe498b531f",
+        default: "6536f6275233b5fe498b531f", //Estado por defecto: Pendiente
         required: true,
     },
     fecha: {
@@ -33,27 +33,47 @@ const formularioSchema = new mongoose.Schema(
         ref: "User",
         required: true,
     },
-    observaciones: {
+    observaciones: {//Solo es requerido por el Usuario Validador
         type: String,
-        required: true,
+        required: false,
     },
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
     //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
     Residencia: {
         type: Buffer,
         required: true,
+        set: function(value) {
+            return upload.single('Residencia')(null, null, function() {
+                return value;
+            });
+        }
     },
     Constitucion: {
         type: Buffer,
         required: true,
+        set: function(value) {
+            return upload.single('Constitucion')(null, null, function() {
+                return value;
+            });
+        }
     },
     Carnet: {
-        type: String,
+        type: Buffer,
         required: true,
+        set: function(value) {
+            return upload.single('Carnet')(null, null, function() {
+                return value;
+            });
+        }
     },
     Propiedad: {
-        type: String,
+        type: Buffer,
         required: true,
+        set: function(value) {
+            return upload.single('Propiedad')(null, null, function() {
+                return value;
+            });
+        }
     }
     },
     {
