@@ -6,6 +6,8 @@ const Formulario = require("../models/formulario.model.js");
 const Categoria = require("../models/categoria.model.js");
 //Importamos el modelo de estado
 const Estado = require("../models/estado.model.js");
+//Importamos el modelo de usuario
+const Usuario = require("../models/user.model.js");
 const { handleError } = require("../utils/errorHandler");
 
 
@@ -13,8 +15,10 @@ const { handleError } = require("../utils/errorHandler");
 //getFormularios
 async function getFormularios() {
   try {
-    const formularios = await Formulario.find()
-      .exec();
+    const formularios = await Formulario.find().populate("categoria").populate("estado")
+    .populate({path:"usuario",select:"username"})
+    .populate({path:"email",select:"email"})
+    .exec();
     if (!formularios) return [null, "No hay formularios"];
 
     return [formularios, null];
@@ -26,24 +30,33 @@ async function getFormularios() {
 //createFormulario
 async function createFormulario(formulario) {
   try {
-    const {categoria, estado, fecha, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
+    const {categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
 
     //Tenemos que ver que tenga una categoria existente
     const categoriaFound = await Categoria.find({ nombre: {$in: categoria} });
     if (categoriaFound.length === 0) return [null, "La categoria no existe"];
     const myCategoria = categoriaFound.map((categoria) => categoria._id);
-    
-    //tenemos que ver que tenga un estado existente
-    const estadoFound = await Estado.find({ nombre: {$in: estado}});
-    if (estadoFound.length === 0) return [null, "El estado no existe"];
-    const myEstado = estadoFound.map((estado) => estado._id);
 
-    const newFormulario = new Formulario({
+    //El usuario tiene que estar en la base de datos
+    const usuarioFound = await Usuario.find({ username: usuario });
+    if (usuarioFound.length===0) return [null, "El usuario no existe"];
+    const myUsuario = usuarioFound.map((usuario) => usuario._id);
+
+    //El email tiene que estar en la base de datos
+    const emailFound = await Usuario.find({ email: email });
+    if (emailFound.length===0) return [null, "El email no existe"];
+    const myEmail = emailFound.map((email) => email._id);
+
+    //Convierto las id a string para poder compararlas
+    const UID = myUsuario[0]._id.toString();
+    const EID = myEmail[0]._id.toString();
+    //Comparamos que la id de usuario sea igual al id del email
+    if (UID !== EID) return [null, "El usuario no coincide con el email, sus ID son: "+UID+" "+EID];
+
+   const newFormulario = new Formulario({
       categoria: myCategoria,
-      estado: myEstado,
-      fecha,
-      usuario,
-      email,
+      usuario: myUsuario,
+      email: myEmail,
       observaciones,
       Residencia,
       Constitucion,
@@ -66,8 +79,10 @@ async function createFormulario(formulario) {
 
 async function getFormularioById(id) {
     try {
-        const formularios = await Formulario.findById({ _id: id })
-    .exec();
+        const formularios = await Formulario.findById({ _id: id }).populate("categoria").populate("estado")
+        .populate({path:"usuario",select:"username"})
+        .populate({path:"email",select:"email"})
+        .exec();
 
   if (!formularios) return [null, "El formulario no existe"];
 
@@ -85,6 +100,8 @@ async function getFormularioById(id) {
  * @returns {Promise} Promesa con el objeto de formulario actualizado
  */
 
+
+//Requisito funcional
 async function updateFormulario(id, formulario) {
     try {
         const formularioFound = await Formulario.findById(id);
@@ -125,20 +142,42 @@ async function deleteFormulario(id) {
 //Obtener el estado del formulario con el nombre del usuario
 /**
  *
- * @param {string} usuario Nombre del usuario
+ * @param {string} email Email del usuario
  * @returns {Promise} Promesa con el objeto de formulario
  */
 
-async function getEstadoFormulario(usuario) {
+async function getEstadoFormulario(email) {
   try {
-    const formulario = await Formulario.find({usuario: usuario}).select('estado _id').populate('estado').exec();
-    if (!formulario) return [null, "El formulario no existe"];
-    //Creamos la constante estadoConsulta para que nos devuelva el estado de la consulta del formulario
-    const estadoConsulta = formulario.map((estado) => estado.estado.nombre);
+     //El email tiene que estar en la base de datos
+     const emailFound = await Usuario.find({ email: email });
+     if (emailFound.length===0) return [null, "El email no existe"];
+     const myEmail = emailFound.map((email) => email._id);
 
+    const formulario = await Formulario.find({email: myEmail}).select('estado _id').populate('estado').exec();
+    if (!formulario) return [null, "El formulario no existe"];
+    //Conseguimos el estado del formulario
+    const estadoConsulta = formulario[0].estado.nombre;
+    
     return ["El estado de la consulta es: "+estadoConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getEstadoFormulario");
+  }
+}
+
+async function getObsFormulario(email) {
+  try {
+    const emailFound = await Usuario.find({ email: email });
+     if (emailFound.length===0) return [null, "El email no existe"];
+     const myEmail = emailFound.map((email) => email._id);
+    
+    const formulario = await Formulario.find({email: myEmail}).select('observaciones').exec();
+    if (!formulario) return [null, "El formulario no existe"];
+    //Conseguimos la observacion del formulario
+    const obsConsulta = formulario.map((obs) => obs.observaciones);
+
+    return ["La(s) observacion(es): "+obsConsulta, null];
+  } catch (error) {
+    handleError(error, "formulario.service -> getObsFormulario");
   }
 }
 
@@ -149,4 +188,5 @@ module.exports = {
     updateFormulario,
     deleteFormulario,
     getEstadoFormulario,
+    getObsFormulario,
 };
