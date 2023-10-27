@@ -100,6 +100,8 @@ async function getFormularioById(id) {
  * @returns {Promise} Promesa con el objeto de formulario actualizado
  */
 
+
+//Requisito funcional
 async function updateFormulario(id, formulario) {
     try {
         const formularioFound = await Formulario.findById(id);
