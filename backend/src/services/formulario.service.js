@@ -156,9 +156,9 @@ async function getEstadoFormulario(email) {
     const formulario = await Formulario.find({email: myEmail}).select('estado _id').populate('estado').exec();
     if (!formulario) return [null, "El formulario no existe"];
     //Conseguimos el estado del formulario
-    const estadoConsulta = formulario[0].estado.nombre;
+    const estadoConsulta = formulario.map((est) => "La consulta con ID: "+est._id+", tiene como estado: "+est.estado.nombre);
     
-    return ["El estado de la consulta es: "+estadoConsulta, null];
+    return [estadoConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getEstadoFormulario");
   }
@@ -175,7 +175,7 @@ async function getObsFormulario(email) {
     //Conseguimos la observacion del formulario
     const obsConsulta = formulario.map((obs) => obs.observaciones);
 
-    return ["La(s) observacion(es): "+obsConsulta, null];
+    return [obsConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getObsFormulario");
   }
