@@ -40,14 +40,15 @@ async function createFormulario(req, res) {
     }
 
     // The name of the input field (i.e. "file") is used to retrieve the uploaded file
+    //ver como el nombre de la carpetaa creada tenga la fecha
     const file = req.files.residencia;
-    let path = `${__dirname}/../uploads/${body.email} ${Date.now}/${file.name}`;
+    let path = `${__dirname}/../uploads/${body.email} ${fecha}/${file.name}`;
     const file2 = req.files.constitucion;
-    let path2 = `${__dirname}/../uploads/${body.email} ${Date.now}/${file2.name}`;
+    let path2 = `${__dirname}/../uploads/${body.email} ${fecha}/${file2.name}`;
     const file3 = req.files.carnet;
-    let path3 = `${__dirname}/../uploads/${body.email} ${Date.now}/${file3.name}`;
+    let path3 = `${__dirname}/../uploads/${body.email} ${fecha}/${file3.name}`;
     const file4 = req.files.propiedad;
-    let path4 = `${__dirname}/../uploads/${body.email} ${Date.now}/${file4.name}`;
+    let path4 = `${__dirname}/../uploads/${body.email} ${fecha}/${file4.name}`;
     file.mv(path, function (err) {
       if (err) {
         return res.status(500).send(err);
@@ -72,6 +73,11 @@ async function createFormulario(req, res) {
         });
       });
     });
+    // Se guardan los nombres de los rchivos en mongoDB
+    body.Residencia = file.name;
+    body.Constitucion = file.name;
+    body.Carnet = file.name;
+    body.Propiedad = file.name;
 
     const [formulario, formularioError] = await FormularioService.createFormulario(body);
     if (formularioError) return respondError(req, res, 404, formularioError);
