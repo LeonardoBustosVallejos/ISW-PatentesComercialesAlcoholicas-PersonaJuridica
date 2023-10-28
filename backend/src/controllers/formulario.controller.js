@@ -40,15 +40,19 @@ async function createFormulario(req, res) {
     }
 
     // The name of the input field (i.e. "file") is used to retrieve the uploaded file
-    //ver como el nombre de la carpetaa creada tenga la fecha
+    //el nombre de la carpeta incluye la fecha de creacion
     const file = req.files.residencia;
-    let path = `${__dirname}/../uploads/${body.email} ${fecha}/${file.name}`;
+    const currentDate = new Date().toISOString().slice(0, 10);
+    let path = `${__dirname}/../uploads/${body.email} ${currentDate}/${file.name}`;
+    
     const file2 = req.files.constitucion;
-    let path2 = `${__dirname}/../uploads/${body.email} ${fecha}/${file2.name}`;
+    let path2 = `${__dirname}/../uploads/${body.email} ${currentDate}/${file2.name}`;
+    
     const file3 = req.files.carnet;
-    let path3 = `${__dirname}/../uploads/${body.email} ${fecha}/${file3.name}`;
+    let path3 = `${__dirname}/../uploads/${body.email} ${currentDate}/${file3.name}`;
+    
     const file4 = req.files.propiedad;
-    let path4 = `${__dirname}/../uploads/${body.email} ${fecha}/${file4.name}`;
+    let path4 = `${__dirname}/../uploads/${body.email} ${currentDate}/${file4.name}`;
     file.mv(path, function (err) {
       if (err) {
         return res.status(500).send(err);
