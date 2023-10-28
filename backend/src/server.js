@@ -12,6 +12,8 @@ const cookieParser = require("cookie-parser");
 const indexRoutes = require("./routes/index.routes.js");
 // Importa el archivo 'configDB.js' para crear la conexión a la base de datos
 const { setupDB } = require("./config/configDB.js");
+// Importa el modulo 'Express filUpload' para subir archivos
+const fileUpload = require('express-fileupload');
 // Importa el handler de errores
 const { handleFatalError, handleError } = require("./utils/errorHandler.js");
 const { createRoles, createUsers, createCategories, createEstados } = require("./config/initialSetup");
@@ -25,6 +27,8 @@ async function setupServer() {
     const server = express();
     // Agrega el middleware para el manejo de datos en formato JSON
     server.use(express.json());
+    // Agrega el middleware para subir archivos
+    server.use(fileUpload({createParentPath: true}));
     // Agregamos los cors
     server.use(cors({ origin: "/" }));
     // Agregamos el middleware para el manejo de cookies

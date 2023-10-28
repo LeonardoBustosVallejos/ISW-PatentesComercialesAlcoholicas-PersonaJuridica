@@ -1,7 +1,7 @@
 "use strict";
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
-const upload = require('../middlewares/multer.middleware.js');
+
 
 //Buscar forma de guardar imagenes en la base de datos
 const formularioSchema = new mongoose.Schema(
@@ -41,39 +41,19 @@ const formularioSchema = new mongoose.Schema(
     //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
     Residencia: {
         type: Buffer,
-        required: true,
-        set: function(value) {
-            return upload.single('Residencia')(null, null, function() {
-                return value;
-            });
-        }
+        required: false
     },
     Constitucion: {
         type: Buffer,
-        required: true,
-        set: function(value) {
-            return upload.single('Constitucion')(null, null, function() {
-                return value;
-            });
-        }
+        required: false,
     },
     Carnet: {
         type: Buffer,
-        required: true,
-        set: function(value) {
-            return upload.single('Carnet')(null, null, function() {
-                return value;
-            });
-        }
+        required: false,
     },
     Propiedad: {
         type: Buffer,
-        required: true,
-        set: function(value) {
-            return upload.single('Propiedad')(null, null, function() {
-                return value;
-            });
-        }
+        required: false,
     }
     },
     {

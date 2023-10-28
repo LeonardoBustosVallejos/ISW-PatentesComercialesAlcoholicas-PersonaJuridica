@@ -27,27 +27,51 @@ async function getFormularios(req, res) {
 //Crear un formulario
 async function createFormulario(req, res) {
   try {
-    
-        // Use the upload middleware to handle file uploads
-        upload.single('Residencia', 'Carnet', 'Constitucion', 'Propiedad')(req, res, function(err) {
-          if (err) {
-              return res.status(400).send({ message: 'Error uploading file' });
-          }
-          /*// Process the form data
-          const formulario = new formulario({
-              // ...
-              Residencia: req.file.buffer,
-              Carnet: req.file.buffer,
-              Constitucion: req.file.buffer,
-              Propiedad: req.file.buffer,
-              // ...
-          });*/
-          formulario.save();
-          res.status(201).send(formulario);
-      });
+
     const { body } = req;
     const { error: bodyError } = formularioBodySchema.validate(body);
     if (bodyError) return respondError(req, res, 400, bodyError.message);
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send("No files were uploaded.");
+    }
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send("No files were uploaded.");
+    }
+
+    // The name of the input field (i.e. "file") is used to retrieve the uploaded file
+    const file = req.files.residencia;
+    let path = `${__dirname}/../uploads/${body.email} ${Date.now}/${file.name}`;
+    const file2 = req.files.constitucion;
+    let path2 = `${__dirname}/../uploads/${body.email} ${Date.now}/${file2.name}`;
+    const file3 = req.files.carnet;
+    let path3 = `${__dirname}/../uploads/${body.email} ${Date.now}/${file3.name}`;
+    const file4 = req.files.propiedad;
+    let path4 = `${__dirname}/../uploads/${body.email} ${Date.now}/${file4.name}`;
+    file.mv(path, function (err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      file2.mv(path2, function (err) {
+        if (err) {
+          return res.status(500).send(err);
+        }
+
+        file3.mv(path3, function (err) {
+          if (err) {
+            return res.status(500).send(err);
+          }
+
+          file4.mv(path4, function (err) {
+            if (err){
+              return res.status(500).send(err);
+            }
+          });
+
+        });
+      });
+    });
 
     const [formulario, formularioError] = await FormularioService.createFormulario(body);
     if (formularioError) return respondError(req, res, 404, formularioError);

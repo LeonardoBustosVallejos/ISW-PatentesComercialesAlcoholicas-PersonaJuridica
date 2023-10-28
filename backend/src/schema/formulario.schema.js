@@ -8,12 +8,9 @@ const ESTADO = require("../constants/estado.constants");
 
 //REVISAR SI LAS VALIDACIONES SON CORRECTAS
 //URGENTE
-/**
- * Esquema de validación para el formulario
- */
 
 const formularioBodySchema = Joi.object({
-    categoria: Joi.array().items(Joi.string().valid(...CATEGORIA)).required().messages({
+    categoria: Joi.string().required().valid(...Object.values(CATEGORIA)).messages({
         "array.base": "La categoria debe ser de tipo array.",
         "any.required": "La categoria es obligatoria.",
         "string.base": "La categoria debe ser de tipo string.",
@@ -37,7 +34,7 @@ const formularioBodySchema = Joi.object({
     }),//de Residencia hacua abajo son los documentos que se deben adjuntar
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
     //puede estar sujetos a cambios
- /*   Residencia: Joi.string().required().messages({
+    Residencia: Joi.string().required().messages({
         "string.empty": "El certificado de residencia no puede estar vacío.",
         "any.required": "El certificado de residencia es obligatorio.",
         "string.base": "El certificado de residencia debe ser de tipo string.",
@@ -56,7 +53,7 @@ const formularioBodySchema = Joi.object({
         "string.empty": "El certificado de propiedad no puede estar vacío.",
         "any.required": "El certificado de propiedad es obligatorio.",
         "string.base": "El certificado de propiedad debe ser de tipo string.",
-    }),*/
+    }),
 }).messages({
     "object.unknown": "No se permiten propiedades adicionales.",
 });
