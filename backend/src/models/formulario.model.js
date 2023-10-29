@@ -36,7 +36,7 @@ const formularioSchema = new mongoose.Schema(
     },
     observaciones: {//Solo es requerido por el Usuario Validador
         type: String,
-        required: false,
+        required: true,
     },
 
     Residencia: {

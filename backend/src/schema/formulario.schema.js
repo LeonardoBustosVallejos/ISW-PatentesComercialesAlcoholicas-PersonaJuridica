@@ -11,10 +11,10 @@ const ESTADO = require("../constants/estado.constants");
 
 const formularioBodySchema = Joi.object({
     categoria: Joi.string().required().valid(...Object.values(CATEGORIA)).messages({
-        "array.base": "La categoria debe ser de tipo array.",
+        "string.empty": "La categoria no puede estar vacía.",
         "any.required": "La categoria es obligatoria.",
         "string.base": "La categoria debe ser de tipo string.",
-        "any.only": "La categoria proporcionada no es válida.",
+
     }),
     usuario: Joi.string().required().messages({//nombre de la persona que solicita el formulario
         "string.empty": "El usuario no puede estar vacío.",
@@ -85,5 +85,21 @@ const formularioEmailSchema = Joi.object({
     }),
 });
 
+const formularioUpdateSchema = Joi.object({
+    estado: Joi.string().required().valid(...Object.values(ESTADO)).messages({
+        "string.empty": "El estado no puede estar vacío.",
+        "any.required": "El estado es obligatorio.",
+        "string.base": "El estado debe ser de tipo string.",
+        "string.valid": "El estado proporcionado no es válido.",
+    }),
+    observaciones: Joi.string().messages({
+        "string.empty": "Las observaciones no pueden estar vacías.",
+        "any.required": "Las observaciones son obligatorias.",
+        "string.base": "Las observaciones deben ser de tipo string.",
+    }),
+}).messages({
+    "object.unknown": "No se permiten propiedades adicionales.",
+});
 
-module.exports = { formularioBodySchema, formularioIdSchema, formularioEmailSchema };
+
+module.exports = { formularioBodySchema, formularioIdSchema, formularioEmailSchema, formularioUpdateSchema };

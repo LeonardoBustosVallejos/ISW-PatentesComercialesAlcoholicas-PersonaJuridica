@@ -110,8 +110,10 @@ async function updateFormulario(id, formulario) {
         //Atributos que vamos a actualizar: El estado y las observaciones
         const { estado, observaciones } = formulario;
         //Tenemos que ver que tenga un estado existente
-        const estadoFound = await Estado.findOne({ name: formulario.estado });
-        if (!estadoFound) return [null, "El estado no existe"];
+        console.log(formulario.estado);
+        const EstadoFound = await Estado.find({ nombre: { $in: estado } });
+        console.log(EstadoFound);
+        if (EstadoFound.length === 0) return [null, "El estado no existe"];
 
         const newFormulario = new Formulario({
             estado,
