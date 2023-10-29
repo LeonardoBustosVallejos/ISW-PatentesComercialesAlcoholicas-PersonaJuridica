@@ -16,7 +16,7 @@ const formularioSchema = new mongoose.Schema(
     estado: {
         type: String,
         ref: "Estado",
-        default: "Pendiente", //Estado por defecto: Pendiente
+        default: "653ecbec9b1545b97c26f14c", //Estado por defecto: Pendiente
         required: true,
     },
     fecha: {
