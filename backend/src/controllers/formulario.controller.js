@@ -40,7 +40,7 @@ async function createFormulario(req, res) {
     }
 
     const uploadedFiles = req.files;
-    const currentDate = new Date().toISOString().slice(0, 10);
+    const currentDate = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
     const ext_permitidas = [".png", ".jpg", ".jpeg", ".pdf"];
 
     const nombresArchivos = Object.values(uploadedFiles).map((file) => {
