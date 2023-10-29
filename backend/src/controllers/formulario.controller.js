@@ -23,41 +23,75 @@ async function getFormularios(req, res) {
     respondError(req, res, 400, error.message);
   }
 }
-
+const fs = require("fs");
 const path = require('path');
 
-//Crear un formulario
+// Modify the createFormulario function to handle both types of forms
 async function createFormulario(req, res) {
   try {
     const { body } = req;
     const { error: bodyError } = formularioBodySchema.validate(body);
     if (bodyError) return respondError(req, res, 400, bodyError.message);
+
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send("Nse subieron archivos.");
+      return res.status(400).send("No se subieron archivos.");
     }
 
     const uploadedFiles = req.files;
     const currentDate = new Date().toISOString().slice(0, 10);
-    const ext_permitidas = ['.png', '.jpg', '.jpeg', '.pdf'];
+    const ext_permitidas = [".png", ".jpg", ".jpeg", ".pdf"];
 
-    const nombresArchivos = Object.values(uploadedFiles).map(file => {
-      const ext = path.extname(file.name);
-      if (!ext_permitidas.includes(ext)) {
-        throw new Error(`NO se permiten extensiones de tipo: ${ext}\n SOLO se permiten de tipo: ${ext_permitidas}`);
-      }
-      const filePath = `${__dirname}/../uploads/${body.email} ${currentDate}/${file.name}`;
-      // Save the file to disk
-      file.mv(filePath);
-      return file.name;
-    });
+    if (body.categoria === "De Alcoholes") {//SI es dee alcoholes
 
-    // Save the names of all uploaded files to the database
-    body.Residencia = nombresArchivos[0];
-    body.Constitucion = nombresArchivos[1];
-    body.Carnet = nombresArchivos[2];
-    body.Propiedad = nombresArchivos[3];
-
+      const nombresArchivos = Object.values(uploadedFiles).map((file) => {
+        const ext = path.extname(file.name);
+        if (!ext_permitidas.includes(ext)) {
+          throw new Error(
+            `NO se permiten extensiones de tipo: ${ext}\n SOLO se permiten de tipo: ${ext_permitidas}`
+          );
+        }
+        const filePath = `${__dirname}/../uploads/${body.email} ${currentDate}/${file.name}`;
+        // Save the file to disk
+        fs.mkdirSync(`${__dirname}/../uploads/${body.email} ${currentDate}`, { recursive: true });
+        fs.writeFileSync(filePath, file.data);
+        return file.name;
+      });
+  
+      // Save the names of all uploaded files to the database
+      body.Residencia = nombresArchivos[0];
+      body.Constitucion = nombresArchivos[1];
+      body.Carnet = nombresArchivos[2];
+      body.Propiedad = nombresArchivos[3];
+      body.extrafield = nombresArchivos[4];
+      console.log(body.extrafield)
+        if(body.extrafield === undefined){
+          return res.status(400).send("No se subio el archivo de Autoridad Sanitaria.");
+        }
+    }
+    else{
+      const nombresArchivos = Object.values(uploadedFiles).map((file) => {
+        const ext = path.extname(file.name);
+        if (!ext_permitidas.includes(ext)) {
+          throw new Error(
+            `NO se permiten extensiones de tipo: ${ext}\n SOLO se permiten de tipo: ${ext_permitidas}`
+          );
+        }
+        const filePath = `${__dirname}/../uploads/${body.email} ${currentDate}/${file.name}`;
+        // Save the file to disk
+        fs.mkdirSync(`${__dirname}/../uploads/${body.email} ${currentDate}`, { recursive: true });
+        fs.writeFileSync(filePath, file.data);
+        return file.name;
+      });
+  
+      // Save the names of all uploaded files to the database
+      body.Residencia = nombresArchivos[0];
+      body.Constitucion = nombresArchivos[1];
+      body.Carnet = nombresArchivos[2];
+      body.Propiedad = nombresArchivos[3];
+      
+    }
     const [formulario, formularioError] = await FormularioService.createFormulario(body);
+    console.log(formulario)
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 201, formulario);

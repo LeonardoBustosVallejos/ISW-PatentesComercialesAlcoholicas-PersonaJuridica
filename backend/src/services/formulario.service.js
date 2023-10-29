@@ -28,32 +28,32 @@ async function getFormularios() {
 }
 
 //createFormulario
-async function createFormulario(formulario) {
+async function createFormulario(formulario, extrafield) {
   try {
-  const {categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
+    const { categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad, extrafield } = formulario;
 
     //Tenemos que ver que tenga una categoria existente
-    const categoriaFound = await Categoria.find({ nombre: {$in: categoria} });
+    const categoriaFound = await Categoria.find({ nombre: { $in: categoria } });
     if (categoriaFound.length === 0) return [null, "La categoria no existe"];
     const myCategoria = categoriaFound.map((categoria) => categoria._id);
 
     //El usuario tiene que estar en la base de datos
     const usuarioFound = await Usuario.find({ username: usuario });
-    if (usuarioFound.length===0) return [null, "El usuario no existe"];
+    if (usuarioFound.length === 0) return [null, "El usuario no existe"];
     const myUsuario = usuarioFound.map((usuario) => usuario._id);
 
     //El email tiene que estar en la base de datos
     const emailFound = await Usuario.find({ email: email });
-    if (emailFound.length===0) return [null, "El email no existe"];
+    if (emailFound.length === 0) return [null, "El email no existe"];
     const myEmail = emailFound.map((email) => email._id);
 
     //Convierto las id a string para poder compararlas
     const UID = myUsuario[0]._id.toString();
     const EID = myEmail[0]._id.toString();
     //Comparamos que la id de usuario sea igual al id del email
-    if (UID !== EID) return [null, "El usuario no coincide con el email, sus ID son: "+UID+" "+EID];
+    if (UID !== EID) return [null, "El usuario no coincide con el email, sus ID son: " + UID + " " + EID];
 
-   const newFormulario = new Formulario({
+    const newFormulario = new Formulario({
       categoria: myCategoria,
       usuario: myUsuario,
       email: myEmail,
@@ -62,6 +62,7 @@ async function createFormulario(formulario) {
       Constitucion,
       Carnet,
       Propiedad,
+      extrafield // Add the extra field to the newFormulario object
     });
     await newFormulario.save();
 

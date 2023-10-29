@@ -54,6 +54,11 @@ const formularioBodySchema = Joi.object({
         "any.required": "El certificado de propiedad es obligatorio.",
         "string.base": "El certificado de propiedad debe ser de tipo string.",
     }),
+    extrafield: Joi.string().messages({
+        "string.empty": "El certificado de Autoridad Sanitaria no puede estar vacío.",
+        "any.required": "El certificado de Autoridad Sanitaria es obligatorio.",
+        "string.base": "El certificado de Autoridad Sanitaria debe ser de tipo string.",
+    }),
 }).messages({
     "object.unknown": "No se permiten propiedades adicionales.",
 });

@@ -16,7 +16,7 @@ const formularioSchema = new mongoose.Schema(
     estado: {
         type: String,
         ref: "Estado",
-        default: ESTADO[1], //Estado por defecto: Pendiente
+        default: "Pendiente", //Estado por defecto: Pendiente
         required: true,
     },
     fecha: {
@@ -41,19 +41,23 @@ const formularioSchema = new mongoose.Schema(
 
     Residencia: {
         type: String,
-        required: false
+        required: true
     },
     Constitucion: {
         type: String,
-        required: false,
+        required: true,
     },
     Carnet: {
         type: String,
-        required: false,
+        required: true,
     },
     Propiedad: {
         type: String,
-        required: false,
+        required: true,
+    },//requerido SOLO para cuando es "De Alcoholes"
+    extrafield: {
+        type: String,
+        required: false
     }
     },
     {
