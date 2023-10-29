@@ -191,6 +191,27 @@ async function getObsFormularioByEmail(req, res) {
   }
 }
 
+async function getFormularioByEmailyID(req, res) {
+  try {
+    const { email, id } = req.params;
+
+    const { error: emailError } = formularioEmailSchema.validate({ email });
+    if (emailError) return respondError(req, res, 400, emailError.message);
+
+    const { error: bodyError } = formularioIdSchema.validate({ id });
+    if (bodyError) return respondError(req, res, 400, bodyError.message);
+
+    const [formulario, formularioError] = await FormularioService.getObsFormularioByID(email, id);
+    if (formularioError) return respondError(req, res, 404, formularioError);
+
+    respondSuccess(req, res, 200, formulario);
+  } catch (error) {
+    handleError(error, "formulario.controller -> getFormularioByEmailyID");
+    respondError(req, res, 500, "No se obtuvo el formulario");
+  }
+
+}
+
 
 
 //Exportamos los modulos
@@ -202,4 +223,5 @@ module.exports = {
   deleteFormularioById,
   getEstadoFormularioByEmail,
   getObsFormularioByEmail,
+  getFormularioByEmailyID,
 };

@@ -157,9 +157,9 @@ async function getEstadoFormulario(email) {
     const formulario = await Formulario.find({email: myEmail}).select('estado _id').populate('estado').exec();
     if (!formulario) return [null, "El formulario no existe"];
     //Conseguimos el estado del formulario
-    const estadoConsulta = formulario[0].estado.nombre;
+    const estadoConsulta = formulario.map((est) => "La consulta con ID: "+est._id+", tiene como estado: "+est.estado.nombre);
     
-    return ["El estado de la consulta es: "+estadoConsulta, null];
+    return [estadoConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getEstadoFormulario");
   }
@@ -176,7 +176,28 @@ async function getObsFormulario(email) {
     //Conseguimos la observacion del formulario
     const obsConsulta = formulario.map((obs) => obs.observaciones);
 
-    return ["La(s) observacion(es): "+obsConsulta, null];
+    return [obsConsulta, null];
+  } catch (error) {
+    handleError(error, "formulario.service -> getObsFormulario");
+  }
+}
+
+async function getObsFormularioByID(email, id) {
+  try {
+    console.log(id);
+    const formularioFound = await Formulario.findById(id);
+    if (!formularioFound) return [null, "El formulario no existe"];
+
+    const emailFound = await Usuario.find({ email: email });
+    if (emailFound.length===0) return [null, "El email no existe"];
+    const myEmail = emailFound.map((email) => email._id);
+
+    const formulario = await Formulario.find({email: myEmail, _id: id}).select('observaciones').exec();
+    if (!formulario) return [null, "El formulario no existe"];
+    //Conseguimos la observacion del formulario
+    const obsConsulta = formulario.map((obs) => obs.observaciones);
+
+    return [obsConsulta, null];
   } catch (error) {
     handleError(error, "formulario.service -> getObsFormulario");
   }
@@ -190,4 +211,5 @@ module.exports = {
     deleteFormulario,
     getEstadoFormulario,
     getObsFormulario,
+    getObsFormularioByID
 };

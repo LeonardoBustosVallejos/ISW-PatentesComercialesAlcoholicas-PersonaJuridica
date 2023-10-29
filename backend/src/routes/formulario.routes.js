@@ -19,8 +19,8 @@ router.put("/:id", formularioController.updateFormularioById);
 router.delete("/:id", formularioController.deleteFormularioById);
 
 //REQUISITO FUNCIONAL FRANCISCO
-//BUSCAR URGENTE COMO HACERLO
 router.get("/consulta/:email", formularioController.getEstadoFormularioByEmail);
 router.get("/consulta/:email/obs", formularioController.getObsFormularioByEmail);
+router.get("/consulta/:email/obs/:id", formularioController.getFormularioByEmailyID);
 
 module.exports = router;
