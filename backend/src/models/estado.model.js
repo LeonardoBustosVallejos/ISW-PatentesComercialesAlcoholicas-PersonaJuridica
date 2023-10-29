@@ -5,13 +5,11 @@ const mongoose = require("mongoose");
 const ESTADO = require("../constants/estado.constants.js");
 
 //Crea el esquema de la coleccion 'estado'
-const estadoSchema = new mongoose.Schema(
-    {
-        //Nombre de los estados
-        nombre: {
-            type: String,
-            enum: ESTADO,
-            required: true,
+const estadoSchema = new mongoose.Schema({
+    nombre: {
+        type: String,
+        enum: Object.values(ESTADO),
+        required: true,
         },
     },
     {

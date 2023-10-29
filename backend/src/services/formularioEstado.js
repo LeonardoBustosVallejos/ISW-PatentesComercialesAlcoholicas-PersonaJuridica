@@ -11,21 +11,58 @@ const { handleError } = require("../utils/errorHandler");
 // Importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
-
-//Obtener todos los formularios
-async function getFormularios() {
+//Obtener todos los formularios por id
+exports.obtenerFormulario = async (req, res) => {
     try {
-      const formularios = await Formulario.find().populate("categoria").populate("estado")
-      .populate({path:"usuario",select:"username"})
-      .populate({path:"email",select:"email"})
-      .exec();
-      if (!formularios) return [null, "No hay formularios"];
-  
-      return [formularios, null];
+        //Obtiene el id del formulario
+        const id = req.params.id;
+        //Obtiene el formulario
+        const formulario = await Formulario.findById(id);
+        //Envia el formulario
+        res.json(formulario);
     } catch (error) {
-      handleError(error, "formulario.service -> getFormularios");
+        handleError(res, error.message);
     }
-  }
+};
 
+//is validator para actualizar el estado del formulario
+exports.actualizarEstado = async (req, res) => {
+    try {
+        //Obtiene el id del formulario
+        const id = req.params.id;
+        //Obtiene el estado del formulario
+        const estado = req.body.estado;
+        //Obtiene el formulario
+        const formulario = await Formulario.findById(id);
+        //Obtiene el estado
+        const estadoFormulario = await Estado.findOne({ nombre: estado });
+        //Actualiza el estado del formulario
+        formulario.estado = estadoFormulario.nombre;
+        //Guarda el formulario
+        await formulario.save();
+        //Envia el formulario
+        res.json(formulario);
+    } catch (error) {
+        handleError(res, error.message);
+    }
+};
 
-
+//is validator para dejar un comentario por el cambio de estado del formulario
+exports.comentarEstado = async (req, res) => {
+    try {
+        //Obtiene el id del formulario
+        const id = req.params.id;
+        //Obtiene el comentario del formulario
+        const comentario = req.body.comentario;
+        //Obtiene el formulario
+        const formulario = await Formulario.findById(id);
+        //Actualiza el comentario del formulario
+        formulario.comentario = comentario;
+        //Guarda el formulario
+        await formulario.save();
+        //Envia el formulario
+        res.json(formulario);
+    } catch (error) {
+        handleError(res, error.message);
+    }
+};
