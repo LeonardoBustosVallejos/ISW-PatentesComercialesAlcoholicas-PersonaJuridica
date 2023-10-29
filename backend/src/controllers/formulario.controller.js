@@ -24,64 +24,38 @@ async function getFormularios(req, res) {
   }
 }
 
+const path = require('path');
+
 //Crear un formulario
 async function createFormulario(req, res) {
   try {
-
     const { body } = req;
     const { error: bodyError } = formularioBodySchema.validate(body);
     if (bodyError) return respondError(req, res, 400, bodyError.message);
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send("No files were uploaded.");
+      return res.status(400).send("Nse subieron archivos.");
     }
 
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send("No files were uploaded.");
-    }
-
-    // The name of the input field (i.e. "file") is used to retrieve the uploaded file
-    //el nombre de la carpeta incluye la fecha de creacion
-    const file = req.files.residencia;
+    const uploadedFiles = req.files;
     const currentDate = new Date().toISOString().slice(0, 10);
-    let path = `${__dirname}/../uploads/${body.email} ${currentDate}/${file.name}`;
-    
-    const file2 = req.files.constitucion;
-    let path2 = `${__dirname}/../uploads/${body.email} ${currentDate}/${file2.name}`;
-    
-    const file3 = req.files.carnet;
-    let path3 = `${__dirname}/../uploads/${body.email} ${currentDate}/${file3.name}`;
-    
-    const file4 = req.files.propiedad;
-    let path4 = `${__dirname}/../uploads/${body.email} ${currentDate}/${file4.name}`;
-    file.mv(path, function (err) {
-      if (err) {
-        return res.status(500).send(err);
+    const ext_permitidas = ['.png', '.jpg', '.jpeg', '.pdf'];
+
+    const nombresArchivos = Object.values(uploadedFiles).map(file => {
+      const ext = path.extname(file.name);
+      if (!ext_permitidas.includes(ext)) {
+        throw new Error(`NO se permiten extensiones de tipo: ${ext}\n SOLO se permiten de tipo: ${ext_permitidas}`);
       }
-
-      file2.mv(path2, function (err) {
-        if (err) {
-          return res.status(500).send(err);
-        }
-
-        file3.mv(path3, function (err) {
-          if (err) {
-            return res.status(500).send(err);
-          }
-
-          file4.mv(path4, function (err) {
-            if (err){
-              return res.status(500).send(err);
-            }
-          });
-
-        });
-      });
+      const filePath = `${__dirname}/../uploads/${body.email} ${currentDate}/${file.name}`;
+      // Save the file to disk
+      file.mv(filePath);
+      return file.name;
     });
-    // Se guardan los nombres de los rchivos en mongoDB
-    body.Residencia = file.name;
-    body.Constitucion = file.name;
-    body.Carnet = file.name;
-    body.Propiedad = file.name;
+
+    // Save the names of all uploaded files to the database
+    body.Residencia = nombresArchivos[0];
+    body.Constitucion = nombresArchivos[1];
+    body.Carnet = nombresArchivos[2];
+    body.Propiedad = nombresArchivos[3];
 
     const [formulario, formularioError] = await FormularioService.createFormulario(body);
     if (formularioError) return respondError(req, res, 404, formularioError);
