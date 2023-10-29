@@ -4,6 +4,6 @@ const ESTADO ={ 1: 'Pendiente',
                 3: 'Aprobado',
                 4: 'Rechazado'}
 //Exporta las categorias
-module.exports = { 
+module.exports = {
     ESTADO,
 };

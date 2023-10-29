@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const {ESTADO} = require("../constants/estado.constants")
 const Estado = require("./estado.model");
 
-
 //Buscar forma de guardar imagenes en la base de datos
 const formularioSchema = new mongoose.Schema(
     {
@@ -15,9 +14,9 @@ const formularioSchema = new mongoose.Schema(
         required: true,
     },
     estado: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Estado",
-        default: "Pendiente", //Estado por defecto: Pendiente
+        default: "6536f6275233b5fe498b531f", //Estado por defecto: Pendiente
         required: true,
     },
     fecha: {

@@ -38,7 +38,7 @@ async function createFormulario(req, res) {
     }
 
     const uploadedFiles = req.files;
-    const currentDate = new Date().toISOString().slice(0, 10);
+    const currentDate = new Date().toISOString().slice(0, 19).replace(/:/g, "-");
     const ext_permitidas = [".png", ".jpg", ".jpeg", ".pdf"];
 
     if (body.categoria === "De Alcoholes") {//SI es dee alcoholes
@@ -63,7 +63,6 @@ async function createFormulario(req, res) {
       body.Carnet = nombresArchivos[2];
       body.Propiedad = nombresArchivos[3];
       body.extrafield = nombresArchivos[4];
-      console.log(body.extrafield)
         if(body.extrafield === undefined){
           return res.status(400).send("No se subio el archivo de Autoridad Sanitaria.");
         }
@@ -91,7 +90,7 @@ async function createFormulario(req, res) {
       
     }
     const [formulario, formularioError] = await FormularioService.createFormulario(body);
-    console.log(formulario)
+
     if (formularioError) return respondError(req, res, 404, formularioError);
 
     respondSuccess(req, res, 201, formulario);

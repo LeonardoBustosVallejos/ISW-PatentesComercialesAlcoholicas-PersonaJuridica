@@ -30,7 +30,7 @@ async function getFormularios() {
 //createFormulario
 async function createFormulario(formulario, extrafield) {
   try {
-    const { categoria, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad, extrafield } = formulario;
+    const { categoria, usuario, email, Residencia, Constitucion, Carnet, Propiedad, extrafield } = formulario;
 
     //Tenemos que ver que tenga una categoria existente
     const categoriaFound = await Categoria.find({ nombre: { $in: categoria } });
@@ -57,7 +57,6 @@ async function createFormulario(formulario, extrafield) {
       categoria: myCategoria,
       usuario: myUsuario,
       email: myEmail,
-      observaciones,
       Residencia,
       Constitucion,
       Carnet,
@@ -174,7 +173,7 @@ async function getObsFormulario(email) {
     const formulario = await Formulario.find({email: myEmail}).select('observaciones').exec();
     if (!formulario) return [null, "El formulario no existe"];
     //Conseguimos la observacion del formulario
-    const obsConsulta = formulario.map((obs) => obs.observaciones);
+    const obsConsulta = formulario.map((obs) =>"Las observaciones son"+obs.observaciones);
 
     return [obsConsulta, null];
   } catch (error) {
