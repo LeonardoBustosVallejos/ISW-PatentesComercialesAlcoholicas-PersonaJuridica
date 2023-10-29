@@ -26,11 +26,6 @@ const formularioBodySchema = Joi.object({
         "any.required": "El email es obligatorio.",
         "string.base": "El email debe ser de tipo string.",
         "string.email": "El email proporcionado no es válido.",
-    }),
-    observaciones: Joi.string().required().messages({
-        "string.empty": "Las observaciones no pueden estar vacías.",
-        "any.required": "Las observaciones son obligatorias.",
-        "string.base": "Las observaciones deben ser de tipo string.",
     }),//de Residencia hacia abajo son los documentos que se deben adjuntar
     //Cambiar tipo o buscar como enviar imagenes a la base de datos
     //puede estar sujetos a cambios
