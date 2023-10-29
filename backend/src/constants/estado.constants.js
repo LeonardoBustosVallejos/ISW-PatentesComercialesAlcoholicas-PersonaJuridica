@@ -1,4 +1,9 @@
 //Categorias permitidas en la base de datos
-const ESTADO =["Aprobado","Rechazado","En Revision","Pendiente"]
+const ESTADO ={ 
+    1: 'Pendiente',
+    2: 'En revision',
+    3: 'Aprobado',
+    4: 'Rechazado'
+}
 //Exporta las categorias
 module.exports = ESTADO;

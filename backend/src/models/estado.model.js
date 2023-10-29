@@ -10,7 +10,7 @@ const estadoSchema = new mongoose.Schema(
         //Nombre de los estados
         nombre: {
             type: String,
-            enum: ESTADO,
+            enum: Object.values(ESTADO),
             required: true,
         },
     },

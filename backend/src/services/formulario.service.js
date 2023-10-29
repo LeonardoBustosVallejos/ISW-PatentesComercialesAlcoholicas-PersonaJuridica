@@ -181,6 +181,27 @@ async function getObsFormulario(email) {
   }
 }
 
+async function getObsFormularioByID(email, id) {
+  try {
+    console.log(id);
+    const formularioFound = await Formulario.findById(id);
+    if (!formularioFound) return [null, "El formulario no existe"];
+
+    const emailFound = await Usuario.find({ email: email });
+    if (emailFound.length===0) return [null, "El email no existe"];
+    const myEmail = emailFound.map((email) => email._id);
+
+    const formulario = await Formulario.find({email: myEmail, _id: id}).select('observaciones').exec();
+    if (!formulario) return [null, "El formulario no existe"];
+    //Conseguimos la observacion del formulario
+    const obsConsulta = formulario.map((obs) => obs.observaciones);
+
+    return [obsConsulta, null];
+  } catch (error) {
+    handleError(error, "formulario.service -> getObsFormulario");
+  }
+}
+
 module.exports = {
     getFormularios,
     createFormulario,
@@ -189,4 +210,5 @@ module.exports = {
     deleteFormulario,
     getEstadoFormulario,
     getObsFormulario,
+    getObsFormularioByID
 };

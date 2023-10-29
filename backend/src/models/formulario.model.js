@@ -1,6 +1,7 @@
 "use strict";
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
+const Estado = require("./estado.model");
 
 
 //Buscar forma de guardar imagenes en la base de datos
@@ -15,7 +16,7 @@ const formularioSchema = new mongoose.Schema(
     estado: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Estado",
-        default: "6536f6275233b5fe498b531f",
+        default: Estado.Pendiente,
         required: true,
     },
     fecha: {
