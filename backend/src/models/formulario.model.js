@@ -1,6 +1,7 @@
 "use strict";
 //importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
+const {ESTADO} = require("../constants/estado.constants")
 
 
 //Buscar forma de guardar imagenes en la base de datos
@@ -13,9 +14,9 @@ const formularioSchema = new mongoose.Schema(
         required: true,
     },
     estado: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "Estado",
-        default: "6536f6275233b5fe498b531f", //Estado por defecto: Pendiente
+        default: ESTADO[1], //Estado por defecto: Pendiente
         required: true,
     },
     fecha: {
@@ -37,8 +38,7 @@ const formularioSchema = new mongoose.Schema(
         type: String,
         required: false,
     },
-    //Cambiar tipo o buscar como enviar imagenes a la base de datos
-    //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
+
     Residencia: {
         type: String,
         required: false
