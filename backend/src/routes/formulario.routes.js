@@ -19,10 +19,13 @@ router.use(authenticationMiddleware);
 router.get("/",  formularioController.getFormularios);
 router.post("/", formularioController.createFormulario);
 router.get("/:id", formularioController.getFormularioById);
-router.put("/:id", formularioController.updateFormularioById);
+router.put("/:id", authorizationMiddleware.isValidator ,formularioController.updateFormularioById);
 router.delete("/:id", formularioController.deleteFormularioById);
 
 //REQUISITO FUNCIONAL FRANCISCO
 router.get("/consulta/:email", formularioController.getEstadoFormularioByEmail);
 router.get("/consulta/:email/obs", formularioController.getObsFormularioByEmail);
 router.get("/consulta/:email/obs/:id", formularioController.getFormularioByEmailyID);
+
+// Exporta el enrutador
+module.exports = router;
