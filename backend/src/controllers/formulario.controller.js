@@ -5,7 +5,7 @@ const { respondSuccess, respondError } = require("../utils/resHandler");
 //Importamos el servicio de formulario
 const FormularioService = require("../services/formulario.service");
 //Importamos el schema de formulario
-const { formularioBodySchema, formularioIdSchema, formularioEmailSchema } = require("../schema/formulario.schema");
+const { formularioBodySchema, formularioIdSchema, formularioEmailSchema, formularioUpdateSchema } = require("../schema/formulario.schema");
 //Importamos el manejo de errores
 const { handleError } = require("../utils/errorHandler");
 
