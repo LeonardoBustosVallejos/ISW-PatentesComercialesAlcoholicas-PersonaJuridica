@@ -5,7 +5,7 @@ const { respondSuccess, respondError } = require("../utils/resHandler");
 //Importamos el servicio de formulario
 const FormularioService = require("../services/formulario.service");
 //Importamos el schema de formulario
-const { formularioBodySchema, formularioIdSchema } = require("../schema/formulario.schema");
+const { formularioBodySchema, formularioIdSchema, formularioUpdateSchema } = require("../schema/formulario.schema");
 //Importamos el manejo de errores
 const { handleError } = require("../utils/errorHandler");
 
@@ -65,10 +65,10 @@ async function updateFormularioById(req, res) {
     const { error: paramsError } = formularioIdSchema.validate(params);
     if (paramsError) return respondError(req, res, 400, paramsError.message);
 
-    const { error: bodyError } = formularioBodySchema.validate(body);
+    const { error: bodyError } = formularioUpdateSchema.validate(body);
     if (bodyError) return respondError(req, res, 400, bodyError.message);
 
-    const [formulario, formularioError] = await FormularioService.updateFormularioById(
+    const [formulario, formularioError] = await FormularioService.updateFormulario(
       params.id,
       body
     );

@@ -6,15 +6,19 @@ const formularioController = require("../controllers/formulario.controller.js");
 
 // Importa el middleware de autorización
 const authorizationMiddleware = require("../middlewares/authorization.middleware.js");
+
+const authenticationMiddleware = require("../middlewares/authentication.middleware.js");
+
 // Instancia del enrutador
 const router = express.Router();
+router.use(authenticationMiddleware);
 
 //Si algo lo realiza el admin, se debe agregar el middleware de autorizacion: authorizationMiddleware.isAdmin
 //Si algo lo realiza el validador, se debe agregar el middleware de autorizacion: authorizationMiddleware.isValidator
 router.get("/",  formularioController.getFormularios);
 router.post("/", formularioController.createFormulario);
 router.get("/:id", formularioController.getFormularioById);
-router.put("/:id", formularioController.updateFormularioById);
+router.put("/:id", authorizationMiddleware.isValidator ,formularioController.updateFormularioById);
 router.delete("/:id", formularioController.deleteFormularioById);
 router.get("/:usuario", formularioController.getEstadoFormularioByName);
 

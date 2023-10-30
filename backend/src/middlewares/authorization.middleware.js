@@ -42,6 +42,7 @@ async function isAdmin(req, res, next) {
 //Middleware para validar si el usuario es un validador
 async function isValidator(req, res, next) {
   try {
+
     const user = await User.findOne({ email: req.email });
     const roles = await Role.find({ _id: { $in: user.roles } });
     for (let i = 0; i < roles.length; i++) {

@@ -13,32 +13,17 @@ const ESTADO = require("../constants/estado.constants");
  */
 
 const formularioBodySchema = Joi.object({
-    categoria: Joi.array().items(Joi.string().valid(...CATEGORIA)).required().messages({
+    categoria: Joi.string().required().valid(...Object.values(CATEGORIA)).messages({
+
         "array.base": "La categoria debe ser de tipo array.",
         "any.required": "La categoria es obligatoria.",
         "string.base": "La categoria debe ser de tipo string.",
         "any.only": "La categoria proporcionada no es válida.",
     }),
-    estado: Joi.array().items(Joi.string().valid(...ESTADO)).required().messages({
-        "array.base": "El estado debe ser de tipo array.",
-        "any.required": "El estado es obligatorio.",
-        "string.base": "El estado debe ser de tipo string.",
-        "any.only": "El estado proporcionado no es válido.",
-    }),
-    fecha: Joi.date().required().messages({
-        "string.empty": "La fecha no puede estar vacía.",
-        "any.required": "La fecha es obligatoria.",
-        "string.base": "La fecha debe ser de tipo string.",
-    }),
     usuario: Joi.string().required().messages({
         "string.empty": "El usuario no puede estar vacío.",
         "any.required": "El usuario es obligatorio.",
         "string.base": "El usuario debe ser de tipo string.",
-    }),
-    observaciones: Joi.string().required().messages({
-        "string.empty": "Las observaciones no pueden estar vacías.",
-        "any.required": "Las observaciones son obligatorias.",
-        "string.base": "Las observaciones deben ser de tipo string.",
     }),
     Residencia: Joi.string().required().messages({
         "string.empty": "El certificado de residencia no puede estar vacío.",
@@ -81,4 +66,20 @@ const formularioIdSchema = Joi.object({
         }),
 });
 
-module.exports = { formularioBodySchema, formularioIdSchema };
+const formularioUpdateSchema = Joi.object({
+    estado: Joi.string().required().messages({
+        "string.empty": "El estado no puede estar vacío.",
+        "any.required": "El estado es obligatorio.",
+        "string.base": "El estado debe ser de tipo string.",
+        "any.only": "El estado proporcionado no es válido.",
+    }),
+    observaciones: Joi.string().required().messages({
+        "string.empty": "Las observaciones no pueden estar vacías.",
+        "any.required": "Las observaciones son obligatorias.",
+        "string.base": "Las observaciones deben ser de tipo string.",
+    }),
+}).messages({
+    "object.unknown": "No se permiten propiedades adicionales.",
+});
+
+module.exports = { formularioBodySchema, formularioIdSchema, formularioUpdateSchema };

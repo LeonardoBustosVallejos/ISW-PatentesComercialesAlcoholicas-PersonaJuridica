@@ -21,22 +21,23 @@ const formularioSchema = new mongoose.Schema(
     },
     fecha: {
         type: Date,
+        defaul: Date.now,
         required: true,
     },
     usuario: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     email: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     observaciones: {
         type: String,
         required: true,
     },
-    //Cambiar tipo o buscar como enviar imagenes a la base de datos
-    //https://stackoverflow.com/questions/31592726/how-to-store-images-in-mongodb-with-node-js-express
     Residencia: {
         type: String,
         required: true,

@@ -7,6 +7,7 @@ const Categoria = require("../models/categoria.model.js");
 //Importamos el modelo de estado
 const Estado = require("../models/estado.model.js");
 const { handleError } = require("../utils/errorHandler");
+const { respondError } = require("../utils/resHandler.js");
 
 
 //Crear CRUD para el formulario
@@ -26,7 +27,7 @@ async function getFormularios() {
 //createFormulario
 async function createFormulario(formulario) {
   try {
-    const {categoria, estado, fecha, usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario;
+    const {categoria, estado,usuario, email, observaciones, Residencia, Constitucion, Carnet, Propiedad } = formulario; 
 
     //Tenemos que ver que tenga una categoria existente
     const categoriaFound = await Categoria.find({ nombre: {$in: categoria} });
@@ -41,7 +42,6 @@ async function createFormulario(formulario) {
     const newFormulario = new Formulario({
       categoria: myCategoria,
       estado: myEstado,
-      fecha,
       usuario,
       email,
       observaciones,
@@ -77,7 +77,6 @@ async function getFormularioById(id) {
         handleError(error, "formulario.service -> getFormularioById");
     }
 }
-
 /**
  * Actualiza un formulario por su id de la base de datos
  * @param {string} Id del formulario
@@ -89,22 +88,33 @@ async function updateFormulario(id, formulario) {
     try {
         const formularioFound = await Formulario.findById(id);
         if (!formularioFound) return [null, "El formulario no existe"];
-
         //Atributos que vamos a actualizar: El estado y las observaciones
-        const { estado, observaciones } = formulario;
+        const {estado, observaciones } = formulario;
         //Tenemos que ver que tenga un estado existente
-        const estadoFound = await Estado.findOne({ name: formulario.estado });
-        if (!estadoFound) return [null, "El estado no existe"];
+        const estadoFound = await Estado.find({ nombre: estado });
+        if (estadoFound.length === 0) return [null, "El estado no existe"];
 
-        const newFormulario = new Formulario({
-            estado,
-            observaciones,
-        });
-        await newFormulario.save();
+        const estadoID = estadoFound.map((estado) => estado._id);
+console.log(formularioFound.usuario);
+console.log(formularioFound.email);
+        const newFormulario = Formulario.findByIdAndUpdate(id,{
+          categoria: formularioFound.categoria,
+          estado: estadoID,
+          observaciones: observaciones,
+          usuario: formularioFound.usuario,
+          email: formularioFound.email,
+          Residencia: formularioFound.Residencia,
+          Constitucion: formularioFound.Constitucion,
+          Carnet: formularioFound.Carnet,
+          Propiedad: formularioFound.Propiedad,
+          extrafield: formularioFound.extrafield,
+          fecha: formularioFound.fecha,
+        },{new: true}).exec();
 
         return [newFormulario, null];
     } catch (error) {
         handleError(error, "formulario.service -> updateFormulario");
+        respondError(req, res, 500, "No se actualizo el servidor");
     }
 }
 
@@ -122,8 +132,6 @@ async function deleteFormulario(id) {
     }
 }
 
-//Obtener el estado del formulario con el nombre del usuario
-//URGENTE: HAY QUE VER COMO HACERLO, REQUISITO FUNCIONAL FRANCISCO
 async function getEstadoFormulario(usuario) {
   try {
     const formulario = await Formulario.findOne(usuario).select('_id estado').exec();
