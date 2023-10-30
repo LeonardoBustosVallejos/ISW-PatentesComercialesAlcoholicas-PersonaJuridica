@@ -14,7 +14,7 @@ const formularioSchema = new mongoose.Schema(
         required: true,
     },
     estado: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "Estado",
         default: "6536f6275233b5fe498b531f", //Estado por defecto: Pendiente
         required: true,
@@ -65,6 +65,7 @@ const formularioSchema = new mongoose.Schema(
         versionKey: false,
     },
 )
+
 
 //Crea el modelo de datos 'Formulario' a partir del esquema 'formularioSchema'
 const Formulario = mongoose.model("Formulario", formularioSchema);
