@@ -211,6 +211,8 @@ module.exports = {
     getEstadoFormulario,
     getObsFormulario,
     getObsFormularioByID
+}
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 "user strict";
 
 //Importamos el modelo de formulario
