@@ -16,11 +16,11 @@ router.use(authenticationMiddleware);
 
 //Si algo lo realiza el admin, se debe agregar el middleware de autorizacion: authorizationMiddleware.isAdmin
 //Si algo lo realiza el validador, se debe agregar el middleware de autorizacion: authorizationMiddleware.isValidator
-router.get("/",  formularioController.getFormularios);
+router.get("/", authorizationMiddleware.isAdmin ,formularioController.getFormularios);
 router.post("/", formularioController.createFormulario);
-router.get("/:id", formularioController.getFormularioById);
+router.get("/:id", authorizationMiddleware.isAdmin ,formularioController.getFormularioById);
 router.put("/:id", authorizationMiddleware.isValidator ,formularioController.updateFormularioById);
-router.delete("/:id", formularioController.deleteFormularioById);
+router.delete("/:id", authorizationMiddleware.isAdmin ,formularioController.deleteFormularioById);
 
 //REQUISITO FUNCIONAL FRANCISCO
 router.get("/consulta/:email", formularioController.getEstadoFormularioByEmail);
